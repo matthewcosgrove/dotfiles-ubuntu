@@ -1,0 +1,11 @@
+# In .bashrc put the following line but uncommented
+# source ~/.bashrc_extension
+
+if [ -f ~/.functions ]; then
+    . ~/.functions
+fi
+if [ -f ~/.env ]; then
+    . ~/.env
+fi
+
+eval "$(direnv hook bash)"
