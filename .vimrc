@@ -21,6 +21,9 @@ Plug 'scrooloose/nerdtree'
 Plug 'jeffkreeftmeijer/vim-numbertoggle'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
+" https://twitter.com/fatih/status/1107947292357730304?s=20
+" I'm using ervandew/supertab which automatically calls CTRL-x CTRL-o whenever I press tab after a dot (.) Checkout my dotfiles fatih/dotfiles on GitHub, it contains some settings there.
+Plug 'ervandew/supertab'
 call plug#end()
 set autowrite
 map <C-n> :cnext<CR>
