@@ -7,12 +7,6 @@ call plug#begin()
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'godoctor/godoctor.vim'
 Plug 'SirVer/ultisnips'
-" Autocomplete with https://github.com/zchee/deoplete-go
-" Disable as showing error due to something like python versioning
-" Plug 'Shougo/deoplete.nvim'
-" Plug 'zchee/deoplete-go', { 'do': 'make'}
-" Plug 'roxma/nvim-yarp'
-" Plug 'roxma/vim-hug-neovim-rpc'
 " from https://medium.com/@huntie/10-essential-vim-plugins-for-2018-39957190b7a9
 Plug 'itchyny/lightline.vim'
 Plug 'w0rp/ale'
@@ -21,9 +15,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'jeffkreeftmeijer/vim-numbertoggle'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
-" https://twitter.com/fatih/status/1107947292357730304?s=20
-" I'm using ervandew/supertab which automatically calls CTRL-x CTRL-o whenever I press tab after a dot (.) Checkout my dotfiles fatih/dotfiles on GitHub, it contains some settings there.
-Plug 'ervandew/supertab'
 call plug#end()
 set autowrite
 map <C-n> :cnext<CR>
@@ -51,12 +42,14 @@ let g:go_fmt_command = "goimports"
 au Filetype go nmap <leader>ga <Plug>(go-alternate-edit)
 au Filetype go nmap <leader>gah <Plug>(go-alternate-split)
 au Filetype go nmap <leader>gav <Plug>(go-alternate-vertical)
+au filetype go inoremap <buffer> . .<C-x><C-o>
 set number relativenumber
 set title
 
 let g:go_fold_enable = ['block', 'import', 'varconst', 'package_comment']
 set foldmethod=syntax
 set foldlevelstart=20
+
 " Enable syntax highlighting per default
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
