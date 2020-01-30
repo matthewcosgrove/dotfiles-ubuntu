@@ -12,7 +12,6 @@ Plug 'itchyny/lightline.vim'
 Plug 'w0rp/ale'
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
-Plug 'jeffkreeftmeijer/vim-numbertoggle'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 call plug#end()
