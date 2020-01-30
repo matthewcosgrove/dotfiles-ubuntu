@@ -7,12 +7,10 @@ call plug#begin()
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'godoctor/godoctor.vim'
 Plug 'SirVer/ultisnips'
-" from https://medium.com/@huntie/10-essential-vim-plugins-for-2018-39957190b7a9
 Plug 'itchyny/lightline.vim'
 Plug 'w0rp/ale'
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
-Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 call plug#end()
 set autowrite
@@ -141,18 +139,6 @@ nmap <leader>tree :NERDTreeToggle<CR>
 " From https://github.com/terryma/vim-multiple-cursors
 " See examples https://github.com/terryma/vim-multiple-cursors/wiki/Keystrokes-for-example-gifs
 let g:multi_cursor_use_default_mapping=0
-
-" deoplete
-" set completeopt=longest,menuone " auto complete setting
-let g:deoplete#enable_at_startup = 1
-" let g:deoplete#enable_smart_case = 1
-" let g:deoplete#auto_complete_start_length = 1
-" let g:deoplete#keyword_patterns = {}
-" let g:deoplete#keyword_patterns['default'] = '\h\w*'
-" let g:deoplete#omni#input_patterns = {}
-" let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-" let g:deoplete#sources#go#align_class = 1
-
 
 " Navigate easier between splits e.g. go impl and go test
 nnoremap <C-J> <C-W><C-J>
