@@ -11,3 +11,11 @@ function check_vars() {
       printf ' %q\n' "${missing_vars[@]}" >&2
   fi
 }
+
+export GIT_REPOS="/home/matthew/work"
+source $GIT_REPOS/hz-automation-client/bin/source_functions_for_hz_mgmt.sh
+
+function mgmt() {
+  hz-mgmt $GIT_REPOS 
+  bucc test
+}

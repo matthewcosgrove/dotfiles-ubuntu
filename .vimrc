@@ -50,6 +50,15 @@ set belloff+=ctrlg " If Vim beeps during completion
 
 set title
 
+" https://stackoverflow.com/a/23978432 --> :find 
+set wildmenu
+set wildmode=list:full
+set path+=**
+set wildignorecase
+
+" https://github.com/junegunn/fzf/blob/master/README-VIM.md
+set rtp+=/usr/local/bin/fzf 
+
 "=====================================================
 "===================== MAPPINGS ======================
 
@@ -270,4 +279,6 @@ augroup quickfix
     autocmd FileType qf setlocal statusline=\ %n\ \ %f%=%L\ lines\
 augroup END
 
-
+" vim-terraform https://github.com/hashivim/vim-terraform
+let g:terraform_fold_sections=1
+let g:terraform_fmt_on_save=1

@@ -15,3 +15,4 @@ complete -F __start_kubectl k
 
 alias gs='git status'
 alias open='xdg-open'
+alias gp='git stash; git pull --rebase; git stash pop; git push'

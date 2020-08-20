@@ -1,0 +1,172 @@
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+call plug#begin()
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+" Plug 'godoctor/godoctor.vim'
+" Plug 'SirVer/ultisnips'
+" Plug 'itchyny/lightline.vim'
+" Plug 'w0rp/ale'
+" Plug 'airblade/vim-gitgutter'
+" Plug 'scrooloose/nerdtree'
+" Plug 'tpope/vim-fugitive'
+call plug#end()
+
+
+
+" https://vim.fandom.com/wiki/Make_Vim_completion_popup_menu_work_just_like_in_an_IDE
+:set completeopt=longest,menuone
+:inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+  \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
+inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
+  \ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
+set autowrite
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+" nnoremap <leader>a :cclose<CR>
+" https://www.reddit.com/r/golang/comments/5k28lo/vimgo_anyone_knows_a_good_way_to_close_both/
+nnoremap <silent> <leader>a :cclose<CR>:lclose<CR>
+
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
+autocmd FileType go nmap <leader>t  <Plug>(go-test)
+let mapleader = ","
+autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+let g:go_fmt_command = "goimports"
+au Filetype go nmap <leader>ga <Plug>(go-alternate-edit)
+au Filetype go nmap <leader>gah <Plug>(go-alternate-split)
+au Filetype go nmap <leader>gav <Plug>(go-alternate-vertical)
+" Not filtering nicely so switching off for now
+" au filetype go inoremap <buffer> . .<C-x><C-o>
+set number relativenumber
+set title
+
+let g:go_fold_enable = ['block', 'import', 'varconst', 'package_comment']
+set foldmethod=syntax
+set foldlevelstart=20
+
+" Enable syntax highlighting per default
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+
+let g:go_highlight_function_calls = 1
+
+" Set whether the JSON tags should be snakecase or camelcase.
+let g:go_addtags_transform = "snakecase"
+
+autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+
+let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+let g:go_metalinter_autosave = 1
+
+" Fix for issue with folding on save as described in https://github.com/fatih/vim-go/issues/502
+let g:go_fmt_experimental = 1
+
+" https://github.com/fatih/vim-go/issues/2271#issuecomment-489470535 and :messages
+" let g:go_test_show_name=1
+
+" wrap long lines in quickfix
+" https://github.com/fatih/vim-go/issues/1271
+augroup quickfix
+    autocmd!
+    autocmd FileType qf setlocal wrap
+    autocmd FileType qf setlocal statusline=\ %n\ \ %f%=%L\ lines\
+augroup END
+
+
+" autocomplete stuff --> https://stackoverflow.com/a/36434001/752167
+augroup completion_preview_close
+  autocmd!
+  autocmd CompleteDone * if !&previewwindow && &completeopt =~ 'preview' | silent! pclose | endif
+augroup END
+
+" From https://www.reddit.com/r/golang/comments/7mf7st/syntax_checking_for_go_in_vim/
+" and
+" From https://github.com/umiyosh/dotfiles/commit/597eea9bb2a3698b01dc8019e69d7edbffc48278
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+let g:ale_sign_column_always = 1
+let g:ale_lint_on_enter = 0
+let g:ale_open_list = 1
+let g:ale_keep_list_window_open = 0
+ " for golang
+let g:ale_linters = {
+    \   'go': ['gometalinter', 'gofmt'],
+\}
+let g:ale_go_gometalinter_options = '--fast --enable=staticcheck --enable=gosimple --enable=unused'
+" let g:ale_go_gometalinter_options = '--fast --vendored-linters --disable-all --enable=gotype --enable=vet --enable=golint -t'
+let g:go_fmt_fail_silently = 1
+
+" From https://github.com/maximbaz/lightline-ale
+let g:lightline = {}
+" https://github.com/itchyny/lightline.vim/issues/71
+set laststatus=2
+let g:lightline.component_expand = {
+      \  'linter_checking': 'lightline#ale#checking',
+      \  'linter_warnings': 'lightline#ale#warnings',
+      \  'linter_errors': 'lightline#ale#errors',
+      \  'linter_ok': 'lightline#ale#ok',
+      \ }
+
+let g:lightline.component_type = {
+      \     'linter_checking': 'left',
+      \     'linter_warnings': 'warning',
+      \     'linter_errors': 'error',
+      \     'linter_ok': 'left',
+      \ }
+
+let g:lightline.active = { 'right': [[ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ]] }
+
+let g:lightline = {
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head'
+      \ },
+      \ }
+
+
+nmap <leader>tree :NERDTreeToggle<CR>
+
+" From https://github.com/terryma/vim-multiple-cursors
+" See examples https://github.com/terryma/vim-multiple-cursors/wiki/Keystrokes-for-example-gifs
+let g:multi_cursor_use_default_mapping=0
+
+" Navigate easier between splits e.g. go impl and go test
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" From https://github.com/fatih/dotfiles/blob/master/vimrc
+
+" create a go doc comment based on the word under the cursor
+function! s:create_go_doc_comment()
+  norm! "zyiw
+  execute ":put! z"
+  execute ":norm! I// \<Esc>A ...\<Esc>"
+endfunction
+nnoremap <leader>doc :<C-u>call <SID>create_go_doc_comment()<CR>
